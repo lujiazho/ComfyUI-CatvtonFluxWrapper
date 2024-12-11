@@ -74,7 +74,7 @@ class CatvtonFluxSampler:
         return {
             "required": {
                 "CatvtonFluxModel": ("CatvtonFluxModel",),
-                "prompt": ("STRING",),
+                "prompt": ("STRING",{"default": ""}),
                 "image": ("IMAGE",),
                 "mask": ("MASK",),
                 "garment": ("IMAGE",),
