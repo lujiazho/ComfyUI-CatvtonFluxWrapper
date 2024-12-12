@@ -10,6 +10,10 @@ from .utils import convert_diffusers_flux_lora
 
 script_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#liblib adapter
+from configs.config import get_juicefs_full_path_safemode
+from configs.node_fields import CatvtonFlux_Model_Mapping,FLUX_Model_Mapping
+
 class LoadCatvtonFlux:
     
     RETURN_TYPES = ("CatvtonFluxModel",)
@@ -30,7 +34,8 @@ class LoadCatvtonFlux:
 
         print("Start loading LoRA weights")
         state_dict, network_alphas = FluxFillPipeline.lora_state_dict(
-            pretrained_model_name_or_path_or_dict="xiaozaa/catvton-flux-lora-alpha",     ## The tryon Lora weights
+            # pretrained_model_name_or_path_or_dict="xiaozaa/catvton-flux-lora-alpha",     ## The tryon Lora weights
+            pretrained_model_name_or_path_or_dict=get_juicefs_full_path_safemode(CatvtonFlux_Model_Mapping, "xiaozaa/catvton-flux-lora-alpha"),     ## The tryon Lora weights
             weight_name="pytorch_lora_weights.safetensors",
             return_alphas=True
         )
@@ -39,7 +44,8 @@ class LoadCatvtonFlux:
             raise ValueError("Invalid LoRA checkpoint.")
         print('Loading diffusion model ...')
         pipe = FluxFillPipeline.from_pretrained(
-            "black-forest-labs/FLUX.1-Fill-dev",
+            # "black-forest-labs/FLUX.1-Fill-dev",
+            get_juicefs_full_path_safemode(FLUX_Model_Mapping, "black-forest-labs/FLUX.1-Fill-dev"),
             torch_dtype=torch.bfloat16
         ).to(load_device)
         FluxFillPipeline.load_lora_into_transformer(
@@ -68,7 +74,7 @@ class CatvtonFluxSampler:
         return {
             "required": {
                 "CatvtonFluxModel": ("CatvtonFluxModel",),
-                "prompt": ("STRING",),
+                "prompt": ("STRING",{"default": ""}),
                 "image": ("IMAGE",),
                 "mask": ("MASK",),
                 "garment": ("IMAGE",),
@@ -161,7 +167,8 @@ class LoadCatvtonFluxLoRA:
 
         print("Start loading LoRA weights")
         state_dict, _ = FluxFillPipeline.lora_state_dict(
-            pretrained_model_name_or_path_or_dict="xiaozaa/catvton-flux-lora-alpha",     ## The tryon Lora weights
+            # pretrained_model_name_or_path_or_dict="xiaozaa/catvton-flux-lora-alpha",     ## The tryon Lora weights
+            pretrained_model_name_or_path_or_dict=get_juicefs_full_path_safemode(CatvtonFlux_Model_Mapping, "xiaozaa/catvton-flux-lora-alpha"),     ## The tryon Lora weights
             weight_name="pytorch_lora_weights.safetensors",
             return_alphas=True
         )
