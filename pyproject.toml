@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-catvtonfluxwrapper"
+description = "ComfyUI-CatvtonFluxWrapper provides ComfyUI nodes for diffusers implementation of Catvton-Flux."
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-CatvtonFluxWrapper"
+Icon = ""
